@@ -1,1 +1,1 @@
-exercies
+exercises
