@@ -64,26 +64,33 @@ const App = () => {
               setNotification(null);
             }, 5000);
           })
-          .catch(() => {
-            setNotification(
-              `Information of ${person.name} has already been removed from server`
-            );
+          .catch((error) => {
+            setNotification(error.response.data.error);
             setIsErr(true);
           });
       }
     } else {
       const newObject = { name: newName, number: newNumber };
-      personsServices.create(newObject).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        // 清空输入框
-        setNewName("");
-        setNewNumber("");
-        setNotification(`Added ${newName}`);
-        setIsErr(false);
-        setTimeout(() => {
-          setNotification(null);
-        }, 5000);
-      });
+      personsServices
+        .create(newObject)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          // 清空输入框
+          setNewName("");
+          setNewNumber("");
+          setNotification(`Added ${newName}`);
+          setIsErr(false);
+          setTimeout(() => {
+            setNotification(null);
+          }, 5000);
+        })
+        .catch((error) => {
+          setNotification(error.response.data.error);
+          setIsErr(true);
+          setTimeout(() => {
+            setNotification(null);
+          }, 5000);
+        });
     }
   };
 
